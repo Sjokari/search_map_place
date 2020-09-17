@@ -374,9 +374,9 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
 
   @override
   void dispose() {
-    _animationController.dispose();
-    _textEditingController.dispose();
-    _fn.dispose();
+    _animationController?.dispose();
+    _textEditingController?.dispose();
+    _fn?.dispose();
     super.dispose();
   }
 }
