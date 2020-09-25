@@ -289,8 +289,12 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
         await _animationController.animateTo(0.5);
         setState(() => _placePredictions = predictions);
         await _animationController.forward();
-
-        _textEditingController.addListener(_autocompletePlace);
+        //To catch changes in _tempInput before listener is added
+        if (_currentInput != _tempInput) {
+          _autocompletePlace();
+        } else {
+          _textEditingController.addListener(_autocompletePlace);
+        }
         return;
       }
 
@@ -367,6 +371,9 @@ class _SearchMapPlaceWidgetState extends State<SearchMapPlaceWidget>
   /// Will listen for input changes every 0.5 seconds, allowing us to make API requests only when the user stops typing.
   void customListener() {
     Future.delayed(Duration(milliseconds: 500), () {
+      if (!mounted) {
+        return;
+      }
       setState(() => _tempInput = _textEditingController?.text);
       customListener();
     });
